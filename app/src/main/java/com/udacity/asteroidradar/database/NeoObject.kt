@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "neo_object_table")
 data class NeoObject(
-    @PrimaryKey
+    @PrimaryKey()
     @ColumnInfo(name = "id")
     var neoId: Double,
 
