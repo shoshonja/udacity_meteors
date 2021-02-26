@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.NasaApi
 import retrofit2.Call
 import retrofit2.Response
@@ -16,10 +17,10 @@ class MainViewModel : ViewModel() {
     //TODO on click of the recycler view item, navigate to the fragment details
     //TODO pass data with safeargs to the fragment detail
 
-    val imageOfTheDayResponse: LiveData<String>
+    val imageOfTheDayResponse: LiveData<PictureOfDay>
         get() = _imageOfTheDayResponse
 
-    private val _imageOfTheDayResponse = MutableLiveData<String>()
+    private val _imageOfTheDayResponse = MutableLiveData<PictureOfDay>()
 
 
     val neoObjectResponse: LiveData<String>
@@ -28,7 +29,7 @@ class MainViewModel : ViewModel() {
     private val _newObjectResponse = MutableLiveData<String>()
 
     init {
-//        getImageOfTheDay()
+        getImageOfTheDay()
 //        getNeoObjects()
     }
 
@@ -37,13 +38,13 @@ class MainViewModel : ViewModel() {
         NasaApi.retrofitService.getImageOfTheDay().enqueue(createImageOfTheDayCallback())
     }
 
-    private fun createImageOfTheDayCallback(): retrofit2.Callback<String> {
-        return object : retrofit2.Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+    private fun createImageOfTheDayCallback(): retrofit2.Callback<PictureOfDay> {
+        return object : retrofit2.Callback<PictureOfDay> {
+            override fun onResponse(call: Call<PictureOfDay>, response: Response<PictureOfDay>) {
                 _imageOfTheDayResponse.value = response.body()
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<PictureOfDay>, t: Throwable) {
             }
         }
     }
