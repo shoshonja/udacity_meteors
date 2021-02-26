@@ -25,6 +25,10 @@ data class NeoObject(
 
     //close_approach_data -> miss_distance -> astronomical
     @ColumnInfo(name = "miss_distance")
-    var missDistance: Double
+    var missDistance: Double,
+
+    var date: String
+
+
 
 )
