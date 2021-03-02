@@ -3,9 +3,12 @@ package com.udacity.asteroidradar.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.NasaApi
+import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 class MainViewModel : ViewModel() {
@@ -30,16 +33,16 @@ class MainViewModel : ViewModel() {
 
     init {
         getImageOfTheDay()
-//        getNeoObjects()
+        getNeoObjects()
     }
 
 
     private fun getImageOfTheDay() {
-        NasaApi.retrofitService.getImageOfTheDay().enqueue(createImageOfTheDayCallback())
+        NasaApi.retrofitMoshiService.getImageOfTheDay(MY_API_KEY).enqueue(createImageOfTheDayCallback())
     }
 
-    private fun createImageOfTheDayCallback(): retrofit2.Callback<PictureOfDay> {
-        return object : retrofit2.Callback<PictureOfDay> {
+    private fun createImageOfTheDayCallback(): Callback<PictureOfDay> {
+        return object : Callback<PictureOfDay> {
             override fun onResponse(call: Call<PictureOfDay>, response: Response<PictureOfDay>) {
                 _imageOfTheDayResponse.value = response.body()
             }
@@ -50,8 +53,20 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getNeoObjects() {
-        //TODO: get not implemented properly
-        NasaApi.retrofitService.getNeoFeed()
+
+        NasaApi.retrofitScalarsService.getNeo(getToday(), getToday(), MY_API_KEY).enqueue(createNeoCallback())
+    }
+
+    private fun createNeoCallback(): Callback<String>? {
+        return object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                _newObjectResponse.value = response.body()
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        }
     }
 }
 
