@@ -12,9 +12,9 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
 
     val asteroidList = ArrayList<Asteroid>()
 
-    val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
-    for (formattedDate in nextSevenDaysFormattedDates) {
-        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(formattedDate)
+//    val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
+//    for (formattedDate in nextSevenDaysFormattedDates) {
+        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(getToday())
 
         for (i in 0 until dateAsteroidJsonArray.length()) {
             val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
@@ -34,12 +34,12 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
                 .getBoolean("is_potentially_hazardous_asteroid")
 
             val asteroid = Asteroid(
-                id, codename, formattedDate, absoluteMagnitude,
+                id, codename, getToday(), absoluteMagnitude,
                 estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous
             )
             asteroidList.add(asteroid)
         }
-    }
+//    }
 
     return asteroidList
 }

@@ -4,9 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udacity.asteroidradar.api.getToday
+import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.NasaApi
 import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -60,6 +62,7 @@ class MainViewModel : ViewModel() {
     private fun createNeoCallback(): Callback<String>? {
         return object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
+                val asteroidArrayList = parseAsteroidsJsonResult(JSONObject(response.body()))
                 _newObjectResponse.value = response.body()
             }
 
