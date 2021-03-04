@@ -14,7 +14,7 @@ interface NeoObjectDao {
     @Query("SELECT * from neo_object_table WHERE id = :neoId")
     suspend fun get(neoId: Double): NeoObject?
 
-//    @Query("SELECT * from neo_object_table WHERE date = :dateFormatted")
-//    suspend fun getAllValid(dateFormatted: String): LiveData<List<NeoObject>>
-
+    @Query("SELECT * from neo_object_table WHERE close_approach_date = :today")
+     fun getTodaysNeo(today: String): LiveData<List<NeoObject?>>
+     //if this is suspend, build fails
 }

@@ -1,10 +1,12 @@
 package com.udacity.asteroidradar.main
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.NeoObjectDao
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.NasaApi
 import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
@@ -13,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel : ViewModel() {
+class MainViewModel(dataSource: NeoObjectDao, application: Application) : ViewModel() {
 
     //TODO get image of the day via retrofit
     //TODO get asteroid data via retrofit
@@ -55,7 +57,6 @@ class MainViewModel : ViewModel() {
     }
 
     private fun getNeoObjects() {
-
         NasaApi.retrofitScalarsService.getNeo(getToday(), getToday(), MY_API_KEY).enqueue(createNeoCallback())
     }
 
@@ -63,7 +64,8 @@ class MainViewModel : ViewModel() {
         return object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 val asteroidArrayList = parseAsteroidsJsonResult(JSONObject(response.body()))
-                _newObjectResponse.value = response.body()
+//                _newObjectResponse.value = response.body()
+                //for loop and store in database
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
