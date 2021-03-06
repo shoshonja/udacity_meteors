@@ -67,26 +67,26 @@ fun getToday(): String {
     return dateFormat.format(currentTime)
 }
 
-fun convertAsteroidListToNeoList(asteroids: List<Asteroid>): List<NeoObject>{
-    val neoList = ArrayList<NeoObject>()
-    for (asteroid in asteroids){
-        neoList.add(convertAsteroidToNeo(asteroid))
-    }
-    return neoList
-}
+//fun convertAsteroidListToNeoList(asteroids: List<Asteroid>): List<NeoObject>{
+//    val neoList = ArrayList<NeoObject>()
+//    for (asteroid in asteroids){
+//        neoList.add(convertAsteroidToNeo(asteroid))
+//    }
+//    return neoList
+//}
 
-fun convertAsteroidToNeo(asteroid: Asteroid): NeoObject {
-    return NeoObject(
-        asteroid.id,
-        asteroid.codename,
-        asteroid.closeApproachDate,
-        asteroid.absoluteMagnitude,
-        asteroid.estimatedDiameter,
-        asteroid.relativeVelocity,
-        asteroid.distanceFromEarth,
-        asteroid.isPotentiallyHazardous
-    )
-}
+//fun convertAsteroidToNeo(asteroid: Asteroid): NeoObject {
+//    return NeoObject(
+//        asteroid.id,
+//        asteroid.codename,
+//        asteroid.closeApproachDate,
+//        asteroid.absoluteMagnitude,
+//        asteroid.estimatedDiameter,
+//        asteroid.relativeVelocity,
+//        asteroid.distanceFromEarth,
+//        asteroid.isPotentiallyHazardous
+//    )
+//}
 
 fun convertAsteroidsToNeos(asteroids: List<Asteroid>): List<NeoObject>{
     return asteroids.map {

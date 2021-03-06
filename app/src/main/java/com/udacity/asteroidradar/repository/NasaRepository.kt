@@ -1,9 +1,12 @@
 package com.udacity.asteroidradar.repository
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.convertAsteroidsToNeos
 import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
+import com.udacity.asteroidradar.database.NeoObject
 import com.udacity.asteroidradar.database.NeoObjectDao
 import com.udacity.asteroidradar.network.NasaApi
 import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
@@ -27,6 +30,17 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
             )
 
         }
+    }
+
+    suspend fun getAllNeos(): List<NeoObject> {
+        return withContext(Dispatchers.IO) {
+            Log.d("IVAN", "getting NEOs from database")
+            neoObjectDao.getAllNeos()
+        }
+    }
+
+    suspend fun getTodaysNeos() {
+
     }
 
 //    private fun createNeoCallback(): Callback<String> {
