@@ -38,15 +38,19 @@ class NeoAdapter : RecyclerView.Adapter<NeoAdapter.NeoViewHolder>() {
     class NeoViewHolder(val binding: ListItemNeoBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: ArrayList<Asteroid>, position: Int) {
-            binding.listNeoCodename.text = data[position].codename
-            binding.listNeoApproachDate.text = data[position].closeApproachDate
-            binding.listNeoIsHazardous.setImageResource(
-                if (data[position].isPotentiallyHazardous) {
-                    R.drawable.ic_status_potentially_hazardous
-                } else {
-                    R.drawable.ic_status_normal
-                }
-            )
+
+            binding.asteroid = data[position]
+            binding.executePendingBindings()
+
+//            binding.listNeoCodename.text = data[position].codename
+//            binding.listNeoApproachDate.text = data[position].closeApproachDate
+//            binding.listNeoIsHazardous.setImageResource(
+//                if (data[position].isPotentiallyHazardous) {
+//                    R.drawable.ic_status_potentially_hazardous
+//                } else {
+//                    R.drawable.ic_status_normal
+//                }
+//            )
         }
     }
 }
