@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.database.NeoDatabase
@@ -42,8 +43,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    private fun createNeoClickListener() = NeoClickListener { asteroidId ->
-        Toast.makeText(context, "$asteroidId", Toast.LENGTH_SHORT).show()
+    private fun createNeoClickListener() = NeoClickListener { asteroid ->
+        viewModel.onAsteroidClicked(asteroid)
     }
 
     private fun setObservers(binding: FragmentMainBinding) {
@@ -54,6 +55,10 @@ class MainFragment : Fragment() {
         viewModel.neoObjects.observe(viewLifecycleOwner, Observer { it?.let {
             adapter.data = it as ArrayList<Asteroid>
         } })
+
+         viewModel.navigateToDetails.observe(viewLifecycleOwner, Observer { asteroid ->
+             findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+         })
 
     }
 

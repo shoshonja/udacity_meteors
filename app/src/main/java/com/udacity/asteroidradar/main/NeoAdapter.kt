@@ -52,6 +52,6 @@ class NeoViewHolder(private val binding: ListItemNeoBinding) :
     }
 }
 
-class NeoClickListener(val clickListener: (asteroidId: Long) -> Unit) {
-    fun onClick(asteroid: Asteroid) = clickListener(asteroid.id)
+class NeoClickListener(val clickListener: (asteroid: Asteroid) -> Unit) {
+    fun onClick(asteroid: Asteroid) = clickListener(asteroid)
 }

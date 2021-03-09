@@ -18,7 +18,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel(private val dataSource: NeoObjectDao, val application: Application) : ViewModel() {
+class MainViewModel(private val dataSource: NeoObjectDao, val application: Application) :
+    ViewModel() {
 
     //TODO get image of the day via retrofit
     //TODO get asteroid data via retrofit
@@ -38,21 +39,23 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
 
     private val _neoObjects = MutableLiveData<List<Asteroid>>()
 
+    val navigateToDetails: LiveData<Asteroid>
+        get() = _navigateToDetails
+
+    private val _navigateToDetails = MutableLiveData<Asteroid>()
+
     private val repository = NasaRepository(dataSource)
 
 
     init {
         getImageOfTheDay()
 
-
         viewModelScope.launch {
             repository.refreshNeoList()
         }
 
-
         viewModelScope.launch {
             _neoObjects.value = repository.getAllNeos().asAsteroid()
-            Log.d("IVAN", "neoObjects populated: " + _neoObjects.value?.size)
         }
     }
 
@@ -71,6 +74,10 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
             override fun onFailure(call: Call<PictureOfDay>, t: Throwable) {
             }
         }
+    }
+
+    fun onAsteroidClicked(asteroid: Asteroid) {
+        _navigateToDetails.value = asteroid
     }
 }
 
