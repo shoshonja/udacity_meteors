@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -35,10 +36,14 @@ class MainFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        adapter = NeoAdapter()
+        adapter = NeoAdapter(createNeoClickListener())
         binding.asteroidRecycler.adapter = adapter
 
         return binding.root
+    }
+
+    private fun createNeoClickListener() = NeoClickListener { asteroidId ->
+        Toast.makeText(context, "$asteroidId", Toast.LENGTH_SHORT).show()
     }
 
     private fun setObservers(binding: FragmentMainBinding) {

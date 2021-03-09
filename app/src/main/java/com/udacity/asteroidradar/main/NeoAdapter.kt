@@ -7,7 +7,7 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.ListItemNeoBinding
 
-class NeoAdapter : RecyclerView.Adapter<NeoAdapter.NeoViewHolder>() {
+class NeoAdapter(private val clickListener: NeoClickListener) : RecyclerView.Adapter<NeoViewHolder>() {
 
     companion object {
         fun from(parent: ViewGroup): NeoViewHolder {
@@ -29,28 +29,29 @@ class NeoAdapter : RecyclerView.Adapter<NeoAdapter.NeoViewHolder>() {
 
     override fun onBindViewHolder(holder: NeoViewHolder, position: Int) {
         holder.bind(data, position)
+        holder.bind(clickListener, data, position)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
+}
 
-    class NeoViewHolder(val binding: ListItemNeoBinding) : RecyclerView.ViewHolder(binding.root) {
+class NeoViewHolder(private val binding: ListItemNeoBinding) :
+    RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(data: ArrayList<Asteroid>, position: Int) {
-
-            binding.asteroid = data[position]
-            binding.executePendingBindings()
-
-//            binding.listNeoCodename.text = data[position].codename
-//            binding.listNeoApproachDate.text = data[position].closeApproachDate
-//            binding.listNeoIsHazardous.setImageResource(
-//                if (data[position].isPotentiallyHazardous) {
-//                    R.drawable.ic_status_potentially_hazardous
-//                } else {
-//                    R.drawable.ic_status_normal
-//                }
-//            )
-        }
+    fun bind(data: ArrayList<Asteroid>, position: Int) {
+        binding.asteroid = data[position]
+        binding.executePendingBindings()
     }
+
+    fun bind(clickListener: NeoClickListener, data: ArrayList<Asteroid>, position: Int){
+        binding.asteroid = data[position]
+        binding.clickListener = clickListener
+        binding.executePendingBindings()
+    }
+}
+
+class NeoClickListener(val clickListener: (asteroidId: Long) -> Unit) {
+    fun onClick(asteroid: Asteroid) = clickListener(asteroid.id)
 }
