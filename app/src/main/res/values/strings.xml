@@ -19,4 +19,21 @@
     <string name="not_hazardous_asteroid_image">Not hazardous asteroid image</string>
     <string name="this_is_nasa_s_picture_of_day_showing_nothing_yet">This is NASA\'s picture of day, showing nothing yet</string>
     <string name="nasa_picture_of_day_content_description_format">NASA\'s picture of day: %s</string>
+
+    <string name="list_item_description_codename">Asteroid codename</string>
+    <string name="list_item_description_approach_date">Asteroid approach date</string>
+    <string name="list_item_description_hazardous">Asteroid hazardous icon</string>
+    <string name="fragment_details_description_image">Detail hazardous image</string>
+    <string name="fragment_details_description_approach_title">Close approach date title</string>
+    <string name="fragment_details_description_approach_date">Close approach date</string>
+    <string name="fragment_details_description_magnitude_title">Aboslute magnitude title</string>
+    <string name="fragment_details_description_absolute_magnitude">Absolute magnitude</string>
+    <string name="fragment_details_description_magnitude_help">Absolute magnitude help button</string>
+    <string name="fragment_details_description_diameter_title">Estimated diameter title</string>
+    <string name="fragment_details_description_estimated_diameter">Estimated diameter</string>
+    <string name="fragment_details_description_velocity_title">Relative velocity title</string>
+    <string name="fragment_details_description_relative_velocity">Relative velocity</string>
+    <string name="fragment_details_description_distance_title">Distance from earth title</string>
+    <string name="fragment_details_description_distance_from_earth">Distance from earth</string>
+    <string name="fragment_main_image_of_the_day">Nasa image of the day</string>
 </resources>

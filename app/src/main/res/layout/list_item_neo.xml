@@ -24,6 +24,7 @@
             android:layout_marginTop="16dp"
             android:textColor="@color/default_text_color"
             android:text="@{asteroid.codename}"
+            android:contentDescription="@string/list_item_description_codename"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="This is a random codename" />
@@ -35,6 +36,7 @@
             android:layout_marginTop="4dp"
             android:textColor="@color/default_text_color"
             android:text="@{asteroid.closeApproachDate}"
+            android:contentDescription="@string/list_item_description_approach_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/list_neo_codename"
             tools:text="2023-12-23" />
@@ -44,6 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:statusIcon="@{asteroid.potentiallyHazardous}"
+            android:contentDescription="@string/list_item_description_hazardous"
             app:layout_constraintBottom_toBottomOf="@id/list_neo_approach_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/list_neo_codename" />
