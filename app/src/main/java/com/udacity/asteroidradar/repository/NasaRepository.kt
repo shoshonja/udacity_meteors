@@ -1,8 +1,6 @@
 package com.udacity.asteroidradar.repository
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.convertAsteroidsToNeos
 import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -21,7 +19,7 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
         withContext(Dispatchers.IO) {
             Log.d("IVAN", "Fetching asteroids")
             val asteroids =
-                NasaApi.retrofitScalarsService.getNeo(getToday(), getToday(), MY_API_KEY).await()
+                NasaApi.retrofitScalarsService.getNeo(getToday(),MY_API_KEY).await()
             Log.d("IVAN", "asteroids retrieved: +$asteroids")
             neoObjectDao.insertAll(
                 convertAsteroidsToNeos(
@@ -35,7 +33,7 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
     suspend fun refreshAndReturnNeoList(): List<NeoObject> {
         return withContext(Dispatchers.IO) {
             val asteroids =
-                NasaApi.retrofitScalarsService.getNeo(getToday(), getToday(), MY_API_KEY).await()
+                NasaApi.retrofitScalarsService.getNeo(getToday(), MY_API_KEY).await()
             neoObjectDao.insertAll(
                 convertAsteroidsToNeos(
                     parseAsteroidsJsonResult(JSONObject(asteroids))

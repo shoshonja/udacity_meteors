@@ -43,7 +43,6 @@ interface NasaApiScalarsService {
     @GET(NEO_FEED)
     fun getNeo(
         @Query(START_DATE) startDate: String,
-        @Query(END_DATE) endDate: String,
         @Query(API_KEY) myKey: String
 
     ):
