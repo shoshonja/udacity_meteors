@@ -32,6 +32,19 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
         }
     }
 
+    suspend fun refreshAndReturnNeoList(): List<NeoObject> {
+        return withContext(Dispatchers.IO) {
+            val asteroids =
+                NasaApi.retrofitScalarsService.getNeo(getToday(), getToday(), MY_API_KEY).await()
+            neoObjectDao.insertAll(
+                convertAsteroidsToNeos(
+                    parseAsteroidsJsonResult(JSONObject(asteroids))
+                )
+            )
+             neoObjectDao.getAllNeos()
+        }
+    }
+
     suspend fun getAllNeos(): List<NeoObject> {
         return withContext(Dispatchers.IO) {
             Log.d("IVAN", "getting NEOs from database")

@@ -21,14 +21,6 @@ import retrofit2.Response
 class MainViewModel(private val dataSource: NeoObjectDao, val application: Application) :
     ViewModel() {
 
-    //TODO get image of the day via retrofit
-    //TODO get asteroid data via retrofit
-    //TODO save data in the database
-    //TODO display data via recycler view
-    //TODO on click of the recycler view item, navigate to the fragment details
-    //TODO pass data with safeargs to the fragment detail
-
-
     val imageOfTheDayResponse: LiveData<PictureOfDay>
         get() = _imageOfTheDayResponse
 
@@ -38,6 +30,11 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
         get() = _neoObjects
 
     private val _neoObjects = MutableLiveData<List<Asteroid>>()
+
+    val neoObjectsRefreshed: LiveData<List<Asteroid>>
+        get() = _neoObjectsRefreshed
+
+    private val _neoObjectsRefreshed = MutableLiveData<List<Asteroid>>()
 
     val navigateToDetails: LiveData<Asteroid>
         get() = _navigateToDetails
@@ -49,16 +46,26 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
 
     init {
         getImageOfTheDay()
+        getAllNeos()
+    }
 
+    private fun refreshNeoList() {
         viewModelScope.launch {
             repository.refreshNeoList()
         }
+    }
 
+    private fun refreshAndReturnNeoList(){
+        viewModelScope.launch {
+            _neoObjects.value = repository.refreshAndReturnNeoList().asAsteroid()
+        }
+    }
+
+    private fun getAllNeos() {
         viewModelScope.launch {
             _neoObjects.value = repository.getAllNeos().asAsteroid()
         }
     }
-
 
     private fun getImageOfTheDay() {
         NasaApi.retrofitMoshiService.getImageOfTheDay(MY_API_KEY)
@@ -78,6 +85,14 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
 
     fun onAsteroidClicked(asteroid: Asteroid) {
         _navigateToDetails.value = asteroid
+    }
+
+    fun handleTriggeredNeoObjects(it: List<Asteroid>) {
+        if (it.isEmpty()) {
+            refreshAndReturnNeoList()
+        } else {
+            _neoObjectsRefreshed.value = it
+        }
     }
 }
 

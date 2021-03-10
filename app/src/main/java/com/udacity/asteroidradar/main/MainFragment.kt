@@ -28,7 +28,9 @@ class MainFragment : Fragment() {
         val viewModelFactory = MainViewModelFactory(dataSource, application)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        adapter = NeoAdapter(createNeoClickListener())
 
+        binding.asteroidRecycler.adapter = adapter
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         binding.statusLoadingWheel.visibility = View.VISIBLE
@@ -36,9 +38,6 @@ class MainFragment : Fragment() {
         setObservers(binding)
 
         setHasOptionsMenu(true)
-
-        adapter = NeoAdapter(createNeoClickListener())
-        binding.asteroidRecycler.adapter = adapter
 
         return binding.root
     }
@@ -53,8 +52,12 @@ class MainFragment : Fragment() {
         })
 
         viewModel.neoObjects.observe(viewLifecycleOwner, Observer { it?.let {
-            adapter.data = it as ArrayList<Asteroid>
+            viewModel.handleTriggeredNeoObjects(it)
         } })
+
+        viewModel.neoObjectsRefreshed.observe(viewLifecycleOwner, Observer { it ->
+            adapter.data = it as ArrayList<Asteroid>
+        })
 
          viewModel.navigateToDetails.observe(viewLifecycleOwner, Observer { asteroid ->
              findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
