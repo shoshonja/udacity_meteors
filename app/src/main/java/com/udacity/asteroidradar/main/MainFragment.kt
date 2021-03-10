@@ -60,7 +60,9 @@ class MainFragment : Fragment() {
         })
 
          viewModel.navigateToDetails.observe(viewLifecycleOwner, Observer { asteroid ->
-             findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+             if(viewModel.navigationAvailable){
+                 findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))
+             }
          })
 
     }

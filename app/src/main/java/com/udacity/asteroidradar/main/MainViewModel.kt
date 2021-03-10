@@ -21,6 +21,7 @@ import retrofit2.Response
 class MainViewModel(private val dataSource: NeoObjectDao, val application: Application) :
     ViewModel() {
 
+
     val imageOfTheDayResponse: LiveData<PictureOfDay>
         get() = _imageOfTheDayResponse
 
@@ -38,6 +39,11 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
 
     val navigateToDetails: LiveData<Asteroid>
         get() = _navigateToDetails
+
+    val navigationAvailable: Boolean
+        get() = _navigationAvailable
+
+    private var _navigationAvailable: Boolean = false
 
     private val _navigateToDetails = MutableLiveData<Asteroid>()
 
@@ -84,7 +90,9 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
     }
 
     fun onAsteroidClicked(asteroid: Asteroid) {
+        _navigationAvailable = true
         _navigateToDetails.value = asteroid
+        _navigationAvailable = false
     }
 
     fun handleTriggeredNeoObjects(it: List<Asteroid>) {
