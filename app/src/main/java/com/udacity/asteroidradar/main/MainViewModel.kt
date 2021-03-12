@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.database.NeoObjectDao
@@ -12,7 +13,6 @@ import com.udacity.asteroidradar.database.asAsteroid
 import com.udacity.asteroidradar.models.PictureOfDay
 import com.udacity.asteroidradar.network.NasaApi
 import com.udacity.asteroidradar.repository.NasaRepository
-import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -55,11 +55,11 @@ class MainViewModel(private val dataSource: NeoObjectDao) :
         getAllNeos()
     }
 
-    private fun refreshNeoList() {
-        viewModelScope.launch {
-            repository.refreshNeoList()
-        }
-    }
+//    private fun refreshNeoList() {
+//        viewModelScope.launch {
+//            repository.refreshNeoList()
+//        }
+//    }
 
     private fun refreshAndReturnNeoList() {
         viewModelScope.launch {
@@ -86,7 +86,7 @@ class MainViewModel(private val dataSource: NeoObjectDao) :
     }
 
     private fun getImageOfTheDay() {
-        NasaApi.retrofitMoshiService.getImageOfTheDay(MY_API_KEY)
+        NasaApi.retrofitMoshiService.getImageOfTheDay(BuildConfig.NASA_API_KEY)
             .enqueue(createImageOfTheDayCallback())
     }
 

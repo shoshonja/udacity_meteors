@@ -1,13 +1,13 @@
 package com.udacity.asteroidradar.repository
 
 import android.util.Log
+import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.api.convertAsteroidsToNeos
 import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.NeoObject
 import com.udacity.asteroidradar.database.NeoObjectDao
 import com.udacity.asteroidradar.network.NasaApi
-import com.udacity.asteroidradar.utils.Constants.MY_API_KEY
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -22,7 +22,7 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
                 NasaApi.retrofitScalarsService.getNeo(
                     getNextSevenDaysFormattedDates()[0],
                     getNextSevenDaysFormattedDates()[7],
-                    MY_API_KEY
+                    BuildConfig.NASA_API_KEY
                 ).await()
             Log.d("IVAN", "asteroids retrieved: +$asteroids")
             neoObjectDao.insertAll(
@@ -38,7 +38,7 @@ class NasaRepository(private val neoObjectDao: NeoObjectDao) {
             val asteroids =
                 NasaApi.retrofitScalarsService.getNeo(
                     getNextSevenDaysFormattedDates()[0],
-                    getNextSevenDaysFormattedDates()[7], MY_API_KEY
+                    getNextSevenDaysFormattedDates()[7], BuildConfig.NASA_API_KEY
                 ).await()
             neoObjectDao.insertAll(
                 convertAsteroidsToNeos(
