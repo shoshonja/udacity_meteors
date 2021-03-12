@@ -13,39 +13,39 @@ fun parseAsteroidsJsonResult(jsonResult: JSONObject): ArrayList<Asteroid> {
 
     val asteroidList = ArrayList<Asteroid>()
 
-//    val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
-//    for (formattedDate in nextSevenDaysFormattedDates) {
-    val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(getToday())
+    val nextSevenDaysFormattedDates = getNextSevenDaysFormattedDates()
+    for (formattedDate in nextSevenDaysFormattedDates) {
+        val dateAsteroidJsonArray = nearEarthObjectsJson.getJSONArray(formattedDate)
 
-    for (i in 0 until dateAsteroidJsonArray.length()) {
-        val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
-        val id = asteroidJson.getLong("id")
-        val codename = asteroidJson.getString("name")
-        val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
-        val estimatedDiameter = asteroidJson.getJSONObject("estimated_diameter")
-            .getJSONObject("kilometers").getDouble("estimated_diameter_max")
+        for (i in 0 until dateAsteroidJsonArray.length()) {
+            val asteroidJson = dateAsteroidJsonArray.getJSONObject(i)
+            val id = asteroidJson.getLong("id")
+            val codename = asteroidJson.getString("name")
+            val absoluteMagnitude = asteroidJson.getDouble("absolute_magnitude_h")
+            val estimatedDiameter = asteroidJson.getJSONObject("estimated_diameter")
+                .getJSONObject("kilometers").getDouble("estimated_diameter_max")
 
-        val closeApproachData = asteroidJson
-            .getJSONArray("close_approach_data").getJSONObject(0)
-        val relativeVelocity = closeApproachData.getJSONObject("relative_velocity")
-            .getDouble("kilometers_per_second")
-        val distanceFromEarth = closeApproachData.getJSONObject("miss_distance")
-            .getDouble("astronomical")
-        val isPotentiallyHazardous = asteroidJson
-            .getBoolean("is_potentially_hazardous_asteroid")
+            val closeApproachData = asteroidJson
+                .getJSONArray("close_approach_data").getJSONObject(0)
+            val relativeVelocity = closeApproachData.getJSONObject("relative_velocity")
+                .getDouble("kilometers_per_second")
+            val distanceFromEarth = closeApproachData.getJSONObject("miss_distance")
+                .getDouble("astronomical")
+            val isPotentiallyHazardous = asteroidJson
+                .getBoolean("is_potentially_hazardous_asteroid")
 
-        val asteroid = Asteroid(
-            id, codename, getToday(), absoluteMagnitude,
-            estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous
-        )
-        asteroidList.add(asteroid)
+            val asteroid = Asteroid(
+                id, codename, formattedDate, absoluteMagnitude,
+                estimatedDiameter, relativeVelocity, distanceFromEarth, isPotentiallyHazardous
+            )
+            asteroidList.add(asteroid)
+        }
     }
-//    }
 
     return asteroidList
 }
 
-private fun getNextSevenDaysFormattedDates(): ArrayList<String> {
+fun getNextSevenDaysFormattedDates(): ArrayList<String> {
     val formattedDateList = ArrayList<String>()
 
     val calendar = Calendar.getInstance()
@@ -67,28 +67,7 @@ fun getToday(): String {
     return dateFormat.format(currentTime)
 }
 
-//fun convertAsteroidListToNeoList(asteroids: List<Asteroid>): List<NeoObject>{
-//    val neoList = ArrayList<NeoObject>()
-//    for (asteroid in asteroids){
-//        neoList.add(convertAsteroidToNeo(asteroid))
-//    }
-//    return neoList
-//}
-
-//fun convertAsteroidToNeo(asteroid: Asteroid): NeoObject {
-//    return NeoObject(
-//        asteroid.id,
-//        asteroid.codename,
-//        asteroid.closeApproachDate,
-//        asteroid.absoluteMagnitude,
-//        asteroid.estimatedDiameter,
-//        asteroid.relativeVelocity,
-//        asteroid.distanceFromEarth,
-//        asteroid.isPotentiallyHazardous
-//    )
-//}
-
-fun convertAsteroidsToNeos(asteroids: List<Asteroid>): List<NeoObject>{
+fun convertAsteroidsToNeos(asteroids: List<Asteroid>): List<NeoObject> {
     return asteroids.map {
         NeoObject(
             neoId = it.id,
@@ -98,6 +77,7 @@ fun convertAsteroidsToNeos(asteroids: List<Asteroid>): List<NeoObject>{
             estimatedDiameterMax = it.estimatedDiameter,
             relativeVelocity = it.relativeVelocity,
             distanceFromEarth = it.distanceFromEarth,
-            potentiallyHazardous = it.isPotentiallyHazardous)
+            potentiallyHazardous = it.isPotentiallyHazardous
+        )
     }.toList()
 }

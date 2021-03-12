@@ -1,12 +1,12 @@
 package com.udacity.asteroidradar.main
 
-import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.api.getNextSevenDaysFormattedDates
+import com.udacity.asteroidradar.api.getToday
 import com.udacity.asteroidradar.database.NeoObjectDao
 import com.udacity.asteroidradar.database.asAsteroid
 import com.udacity.asteroidradar.models.PictureOfDay
@@ -18,7 +18,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class MainViewModel(private val dataSource: NeoObjectDao, val application: Application) :
+class MainViewModel(private val dataSource: NeoObjectDao) :
     ViewModel() {
 
 
@@ -61,15 +61,27 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
         }
     }
 
-    private fun refreshAndReturnNeoList(){
+    private fun refreshAndReturnNeoList() {
         viewModelScope.launch {
             _neoObjects.value = repository.refreshAndReturnNeoList().asAsteroid()
         }
     }
 
-    private fun getAllNeos() {
+    fun getAllNeos() {
         viewModelScope.launch {
             _neoObjects.value = repository.getAllNeos().asAsteroid()
+        }
+    }
+
+    fun getTodaysNeos() {
+        viewModelScope.launch {
+            _neoObjects.value = repository.getTodaysNeos(getToday()).asAsteroid()
+        }
+    }
+
+    fun getSavedNeos() {
+        viewModelScope.launch {
+            _neoObjects.value = repository.getWeeklyNeos(getNextSevenDaysFormattedDates()).asAsteroid()
         }
     }
 
@@ -95,6 +107,8 @@ class MainViewModel(private val dataSource: NeoObjectDao, val application: Appli
         _navigationAvailable = false
     }
 
+
+    //TODO only triggers if list is empty....
     fun handleTriggeredNeoObjects(it: List<Asteroid>) {
         if (it.isEmpty()) {
             refreshAndReturnNeoList()

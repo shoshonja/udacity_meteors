@@ -2,7 +2,6 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,15 +16,17 @@ class MainFragment : Fragment() {
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: NeoAdapter
 
+    private lateinit var binding: FragmentMainBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMainBinding.inflate(inflater)
+         binding = FragmentMainBinding.inflate(inflater)
 
         val application = requireNotNull(this.activity).application
         val dataSource = NeoDatabase.getInstance(application).neoDatabaseDao
-        val viewModelFactory = MainViewModelFactory(dataSource, application)
+        val viewModelFactory = MainViewModelFactory(dataSource)
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
         adapter = NeoAdapter(createNeoClickListener())
@@ -53,10 +54,12 @@ class MainFragment : Fragment() {
 
         viewModel.neoObjects.observe(viewLifecycleOwner, Observer { it?.let {
             viewModel.handleTriggeredNeoObjects(it)
+            binding.statusLoadingWheel.visibility = View.VISIBLE
         } })
 
         viewModel.neoObjectsRefreshed.observe(viewLifecycleOwner, Observer { it ->
             adapter.data = it as ArrayList<Asteroid>
+            binding.statusLoadingWheel.visibility = View.GONE
         })
 
          viewModel.navigateToDetails.observe(viewLifecycleOwner, Observer { asteroid ->
@@ -73,6 +76,12 @@ class MainFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        binding.statusLoadingWheel.visibility = View.VISIBLE
+        when (item.itemId){
+            R.id.show_today_menu -> viewModel.getTodaysNeos()
+            R.id.show_saved_menu -> viewModel.getSavedNeos()
+            else -> viewModel.getAllNeos()
+        }
         return true
     }
 }
