@@ -49,12 +49,12 @@ class MainFragment : Fragment() {
 
     private fun setObservers(binding: FragmentMainBinding) {
         viewModel.imageOfTheDayResponse.observe(viewLifecycleOwner, {
-            binding.statusLoadingWheel.visibility = View.GONE
+//            binding.statusLoadingWheel.visibility = View.GONE
         })
 
         viewModel.neoObjects.observe(viewLifecycleOwner, Observer { it?.let {
             viewModel.handleTriggeredNeoObjects(it)
-            binding.statusLoadingWheel.visibility = View.VISIBLE
+//            binding.statusLoadingWheel.visibility = View.VISIBLE
         } })
 
         viewModel.neoObjectsRefreshed.observe(viewLifecycleOwner, Observer { it ->
